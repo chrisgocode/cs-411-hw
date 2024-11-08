@@ -11,11 +11,28 @@ configure_logger(logger)
 
 
 class BattleModel:
+    """
+    A class to manage battles between meal combatants.
+
+    Attributes:
+        combatants (List[Meal]): The list of meals prepared for battle, maximum of 2. 
+    """
 
     def __init__(self):
+        """
+        Initializes the BattleModel instance.
+        """
         self.combatants: List[Meal] = []
 
     def battle(self) -> str:
+        """Simulates a battle between two meal combatants.
+
+        Args:
+            self: The BattleModel instance.
+
+        Returns:
+            The name of the winning meal.
+        """
         logger.info("Two meals enter, one meal leaves!")
 
         if len(self.combatants) < 2:
@@ -26,7 +43,9 @@ class BattleModel:
         combatant_2 = self.combatants[1]
 
         # Log the start of the battle
-        logger.info("Battle started between %s and %s", combatant_1.meal, combatant_2.meal)
+        logger.info(
+            "Battle started between %s and %s", combatant_1.meal, combatant_2.meal
+        )
 
         # Get battle scores for both combatants
         score_1 = self.get_battle_score(combatant_1)
@@ -60,8 +79,8 @@ class BattleModel:
         logger.info("The winner is: %s", winner.meal)
 
         # Update stats for both combatants
-        update_meal_stats(winner.id, 'win')
-        update_meal_stats(loser.id, 'loss')
+        update_meal_stats(winner.id, "win")
+        update_meal_stats(loser.id, "loss")
 
         # Remove the losing combatant from combatants
         self.combatants.remove(loser)
@@ -69,18 +88,42 @@ class BattleModel:
         return winner.meal
 
     def clear_combatants(self):
+        """Clears the combatants list
+
+        Args:
+            self: The BattleModel instance.
+
+        Returns:
+            None
+        """
         logger.info("Clearing the combatants list.")
         self.combatants.clear()
 
     def get_battle_score(self, combatant: Meal) -> float:
+        """ Calculates the battle score of the combatant
+
+        Args:
+            self: The BattleModel instance.
+            combatant: The combatant meal to calculate the score for.
+
+        Returns:
+            The calculated battle score.
+        """
         difficulty_modifier = {"HIGH": 1, "MED": 2, "LOW": 3}
 
         # Log the calculation process
-        logger.info("Calculating battle score for %s: price=%.3f, cuisine=%s, difficulty=%s",
-                    combatant.meal, combatant.price, combatant.cuisine, combatant.difficulty)
+        logger.info(
+            "Calculating battle score for %s: price=%.3f, cuisine=%s, difficulty=%s",
+            combatant.meal,
+            combatant.price,
+            combatant.cuisine,
+            combatant.difficulty,
+        )
 
         # Calculate score
-        score = (combatant.price * len(combatant.cuisine)) - difficulty_modifier[combatant.difficulty]
+        score = (combatant.price * len(combatant.cuisine)) - difficulty_modifier[
+            combatant.difficulty
+        ]
 
         # Log the calculated score
         logger.info("Battle score for %s: %.3f", combatant.meal, score)
@@ -88,12 +131,24 @@ class BattleModel:
         return score
 
     def get_combatants(self) -> List[Meal]:
+        """ Retrieves a list of combatants
+
+        Args:
+            self: The BattleModel instance.
+
+        Returns:
+            A list of combatants.
+        """
+
         logger.info("Retrieving current list of combatants.")
         return self.combatants
 
     def prep_combatant(self, combatant_data: Meal):
         if len(self.combatants) >= 2:
-            logger.error("Attempted to add combatant '%s' but combatants list is full", combatant_data.meal)
+            logger.error(
+                "Attempted to add combatant '%s' but combatants list is full",
+                combatant_data.meal,
+            )
             raise ValueError("Combatant list is full, cannot add more combatants.")
 
         # Log the addition of the combatant
@@ -102,4 +157,7 @@ class BattleModel:
         self.combatants.append(combatant_data)
 
         # Log the current state of combatants
-        logger.info("Current combatants list: %s", [combatant.meal for combatant in self.combatants])
+        logger.info(
+            "Current combatants list: %s",
+            [combatant.meal for combatant in self.combatants],
+        )
