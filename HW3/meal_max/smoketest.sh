@@ -158,7 +158,7 @@ prep_combatant() {
 
 battle() {
   echo "Starting battle..."
-  response=$(curl -s -X POST "$BASE_URL/battle")
+  response=$(curl -s -X GET "$BASE_URL/battle")
   if echo "$response" | grep -q '"status": "success"'; then
     echo "Battle completed successfully."
     if [ "$ECHO_JSON" = true ]; then
@@ -173,7 +173,7 @@ battle() {
 
 clear_combatants() {
   echo "Clearing combatants..."
-  response=$(curl -s -X DELETE "$BASE_URL/clear-combatants")
+  response=$(curl -s -X POST "$BASE_URL/clear-combatants")
   if echo "$response" | grep -q '"status": "success"'; then
     echo "Combatants cleared successfully."
   else
