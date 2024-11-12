@@ -6,8 +6,28 @@ from meal_max.utils.logger import configure_logger
 logger = logging.getLogger(__name__)
 configure_logger(logger)
 
-
 def get_random() -> float:
+    """Fetches a random decimal number from random.org.
+
+    This function makes a GET request to the random.org API to retrieve a 
+    random decimal number. The retrieved number is then converted to a float 
+    and returned.
+
+    Returns:
+        float: A random decimal number fetched from random.org.
+
+    Raises:
+        ValueError: If the response from random.org is not a valid decimal number.
+        RuntimeError: If there is a timeout or a request failure.
+    
+    Logs:
+        info: When the request to random.org is made and the random number received.
+        error: If the request to random.org times out or fails.
+
+    Example:
+        >>> random_number = get_random()
+        >>> print(random_number)
+    """
     url = "https://www.random.org/decimal-fractions/?num=1&dec=2&col=1&format=plain&rnd=new"
 
     try:
